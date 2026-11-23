@@ -3,78 +3,741 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PIXEL QUEST — Todo List</title>
+<title>QUEST BOARD — Pixel & Hand-Drawn Todo List</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Nunito:wght@400;600;700;800;900&display=swap');
-:root{--ink:#29243d;--muted:#817b9b;--paper:#fffaf0;--lav:#b9a7ff;--pink:#ff9fc8;--mint:#9be7c4;--yellow:#ffe28a;--line:#39334f;--shadow:5px 5px 0 var(--line)}
-*{box-sizing:border-box}body{margin:0;min-height:100vh;color:var(--ink);font-family:Nunito,system-ui,sans-serif;background-color:#e9e3ff;background-image:linear-gradient(45deg,#dcd3ff 25%,transparent 25%),linear-gradient(-45deg,#dcd3ff 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#dcd3ff 75%),linear-gradient(-45deg,transparent 75%,#dcd3ff 75%);background-size:28px 28px;background-position:0 0,0 14px,14px -14px,-14px 0}
-button,input,textarea,select{font:inherit}.pixel{font-family:'Press Start 2P',monospace;line-height:1.6}.app{width:min(1050px,calc(100% - 30px));margin:34px auto 50px;transition:width .2s ease}.topbar{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:22px}.brand{display:flex;align-items:center;gap:13px}.brand-icon{width:48px;height:48px;background:var(--yellow);border:3px solid var(--line);box-shadow:3px 3px 0 var(--line);display:grid;place-items:center;font-size:25px}.brand h1{font-size:clamp(13px,2vw,19px);margin:0}.date-chip{background:var(--paper);border:3px solid var(--line);padding:10px 13px;box-shadow:3px 3px 0 var(--line);font-weight:900;font-size:12px}
-.hero{background:var(--lav);border:3px solid var(--line);box-shadow:var(--shadow);padding:26px 28px;display:grid;grid-template-columns:1fr auto;align-items:center;gap:15px;position:relative;overflow:hidden}.hero:after{content:'✦';font-size:100px;position:absolute;right:25%;top:-28px;opacity:.17}.hero h2{font-size:clamp(15px,2.3vw,23px);margin:0 0 9px;position:relative;z-index:1}.hero p{margin:0;font-weight:800;color:#443b68;position:relative;z-index:1}.hero-art{font-size:62px;filter:drop-shadow(4px 4px 0 #51456f);z-index:1}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;margin:22px 0}.stat{border:3px solid var(--line);box-shadow:3px 3px 0 var(--line);padding:15px 17px;background:var(--paper)}.stat:nth-child(2){background:#e4fff1}.stat:nth-child(3){background:#fff0f7}.stat-label{font-size:10px;font-weight:900;color:var(--muted);letter-spacing:1px;text-transform:uppercase}.stat-num{font-family:'Press Start 2P';font-size:22px;margin-top:9px}
-.layout{display:grid;grid-template-columns:330px 1fr;gap:20px;align-items:start}.panel{background:var(--paper);border:3px solid var(--line);box-shadow:var(--shadow)}.panel-head{padding:17px 19px;border-bottom:3px dashed #d6cfe4;display:flex;justify-content:space-between;align-items:center;gap:10px}.panel-head h3{font-size:11px;margin:0}.form-body{padding:19px}.field{margin-bottom:15px}.field label{display:block;font-size:11px;font-weight:900;margin-bottom:7px}.field input,.field textarea,.field select{width:100%;border:2px solid var(--line);background:white;padding:11px 12px;outline:none;border-radius:0;color:var(--ink);font-weight:700}.field textarea{resize:vertical;min-height:72px}.field input:focus,.field textarea:focus,.field select:focus{box-shadow:3px 3px 0 var(--lav)}.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}.btn{border:3px solid var(--line);box-shadow:3px 3px 0 var(--line);padding:11px 14px;font-weight:900;cursor:pointer;transition:.12s; color:var(--ink)}.btn:active{transform:translate(3px,3px);box-shadow:none}.btn-primary{background:var(--mint);width:100%}.btn-small{padding:7px 10px;font-size:11px;background:var(--yellow)}.btn-expand{background:#fff;padding:6px 10px;font-size:10px;border:2px solid var(--line);box-shadow:2px 2px 0 var(--line);display:inline-flex;align-items:center;gap:5px}.btn-expand:hover{background:var(--yellow)}.btn-expand.active{background:var(--pink)}.task-area{min-width:0}.toolbar{padding:14px 17px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;border-bottom:3px dashed #d6cfe4}.search{flex:1;min-width:140px;border:2px solid var(--line);padding:9px 11px;background:#fff;font-weight:700}.filters{display:flex;gap:6px}.filter{border:2px solid var(--line);background:#fff;padding:8px 10px;font-size:10px;font-weight:900;cursor:pointer}.filter.active{background:var(--lav)}.task-list{padding:13px;display:grid;gap:10px}
+@import url('https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&family=Nunito:wght@400;600;700;800;900&family=Patrick+Hand&family=Press+Start+2P&display=swap');
 
-/* Styling Mode Lebar Selayar (Focus Mode) */
-.app.board-expanded{width:min(1400px,calc(100% - 28px));margin-top:20px}
+:root {
+  /* Default: Pixel Art Variables */
+  --ink: #29243d;
+  --muted: #817b9b;
+  --paper: #fffaf0;
+  --lav: #b9a7ff;
+  --pink: #ff9fc8;
+  --mint: #9be7c4;
+  --yellow: #ffe28a;
+  --blue: #bce0ff;
+  --line: #39334f;
+  --shadow: 5px 5px 0 var(--line);
+  --shadow-sm: 3px 3px 0 var(--line);
+  --radius-box: 0px;
+  --radius-alt: 0px;
+  --radius-pill: 0px;
+  --border-w: 3px;
+  --font-body: 'Nunito', system-ui, sans-serif;
+  --font-head: 'Press Start 2P', monospace;
+  --base-size: 15px;
+}
+
+/* =========================================
+   TEMA 1: PIXEL ART
+   ========================================= */
+body.theme-pixel {
+  background-color: #e9e3ff;
+  background-image:
+    linear-gradient(45deg, #dcd3ff 25%, transparent 25%),
+    linear-gradient(-45deg, #dcd3ff 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #dcd3ff 75%),
+    linear-gradient(-45deg, transparent 75%, #dcd3ff 75%);
+  background-size: 28px 28px;
+  background-position: 0 0, 0 14px, 14px -14px, -14px 0;
+}
+
+body.theme-pixel .display-font {
+  font-family: 'Press Start 2P', monospace;
+  line-height: 1.6;
+}
+
+body.theme-pixel .hero::after {
+  content: '✦';
+  font-size: 100px;
+  position: absolute;
+  right: 25%;
+  top: -28px;
+  opacity: .17;
+  pointer-events: none;
+}
+
+/* =========================================
+   TEMA 2: HAND-DRAWN (SKETCHBOOK)
+   ========================================= */
+body.theme-hand {
+  --ink: #23222b;
+  --muted: #686475;
+  --paper: #fffdf7;
+  --lav: #d9ceff;
+  --pink: #ffc2d4;
+  --mint: #b8f2d6;
+  --yellow: #fff099;
+  --blue: #bde0fe;
+  --line: #23222b;
+  --shadow: 4px 5px 0px var(--line);
+  --shadow-sm: 3px 3px 0px var(--line);
+  --radius-box: 255px 15px 225px 15px / 15px 225px 15px 255px;
+  --radius-alt: 15px 225px 15px 255px / 255px 15px 225px 15px;
+  --radius-pill: 45% 55% 48% 52% / 52% 45% 55% 48%;
+  --border-w: 2.5px;
+  --font-body: 'Patrick Hand', cursive, sans-serif;
+  --font-head: 'Gloria Hallelujah', cursive;
+  --base-size: 18px;
+
+  background-color: #fbf8f1;
+  background-image:
+    linear-gradient(90deg, transparent 44px, #f2b5b5 44px, #f2b5b5 46px, transparent 46px),
+    repeating-linear-gradient(transparent, transparent 29px, #e3dfd3 30px);
+  background-attachment: local;
+}
+
+body.theme-hand .display-font {
+  font-family: 'Gloria Hallelujah', cursive;
+  letter-spacing: 0.5px;
+  line-height: 1.4;
+}
+
+body.theme-hand .brand h1 {
+  text-decoration: underline wavy var(--pink) 3px;
+  text-underline-offset: 6px;
+}
+
+body.theme-hand .brand-icon {
+  transform: rotate(-3deg);
+}
+
+body.theme-hand .hero::before {
+  content: '';
+  position: absolute;
+  top: -11px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-1.5deg);
+  width: 110px;
+  height: 22px;
+  background: rgba(255, 240, 153, 0.85);
+  border: 1.5px dashed rgba(35, 34, 43, 0.45);
+}
+
+body.theme-hand .stat { transform: rotate(-0.6deg); }
+body.theme-hand .stat:nth-child(2) { transform: rotate(0.7deg); }
+body.theme-hand .stat:nth-child(3) { transform: rotate(-0.4deg); }
+body.theme-hand .done .task-title { text-decoration: line-through wavy var(--ink) 1.5px; }
+
+/* =========================================
+   BASE & SHARED STYLES
+   ========================================= */
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: var(--base-size);
+  transition: background-color .25s ease, color .2s ease;
+}
+
+button, input, textarea, select {
+  font: inherit;
+  color: var(--ink);
+}
+
+.app {
+  width: min(1050px, calc(100% - 30px));
+  margin: 30px auto 50px;
+  transition: width .2s ease;
+}
+
+/* Topbar & Theme Switcher */
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 22px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+}
+
+.brand-icon {
+  width: 48px;
+  height: 48px;
+  background: var(--yellow);
+  border: var(--border-w) solid var(--line);
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-sm);
+  display: grid;
+  place-items: center;
+  font-size: 24px;
+}
+
+.brand h1 {
+  font-size: clamp(14px, 2.2vw, 20px);
+  margin: 0;
+}
+
+.top-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.theme-switcher {
+  display: inline-flex;
+  background: var(--paper);
+  border: var(--border-w) solid var(--line);
+  border-radius: var(--radius-box);
+  box-shadow: var(--shadow-sm);
+  padding: 3px;
+  gap: 4px;
+}
+
+.theme-btn {
+  border: 2px solid transparent;
+  border-radius: var(--radius-alt);
+  background: transparent;
+  padding: 5px 10px;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: .15s;
+}
+
+body.theme-hand .theme-btn { font-size: 15px; padding: 3px 10px; }
+
+.theme-btn.active {
+  background: var(--yellow);
+  border-color: var(--line);
+}
+
+.date-chip {
+  background: var(--paper);
+  border: var(--border-w) solid var(--line);
+  border-radius: var(--radius-alt);
+  padding: 9px 13px;
+  box-shadow: var(--shadow-sm);
+  font-weight: 900;
+  font-size: 12px;
+}
+
+body.theme-hand .date-chip { font-size: 16px; padding: 6px 14px; }
+
+/* Hero */
+.hero {
+  background: var(--lav);
+  border: var(--border-w) solid var(--line);
+  border-radius: var(--radius-box);
+  box-shadow: var(--shadow);
+  padding: 24px 28px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 15px;
+  position: relative;
+}
+
+.hero h2 {
+  font-size: clamp(15px, 2.3vw, 23px);
+  margin: 0 0 8px;
+  position: relative;
+  z-index: 1;
+}
+
+.hero p {
+  margin: 0;
+  font-weight: 800;
+  color: #3d355c;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-art {
+  font-size: 58px;
+  filter: drop-shadow(4px 4px 0 rgba(41, 36, 61, 0.35));
+  z-index: 1;
+}
+
+/* Stats */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin: 22px 0;
+}
+
+.stat {
+  border: var(--border-w) solid var(--line);
+  border-radius: var(--radius-alt);
+  box-shadow: var(--shadow-sm);
+  padding: 14px 17px;
+  background: var(--paper);
+}
+
+.stat:nth-child(2) { background: #e4fff1; border-radius: var(--radius-box); }
+.stat:nth-child(3) { background: #fff0f7; }
+
+.stat-label {
+  font-size: 11px;
+  font-weight: 900;
+  color: var(--muted);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+body.theme-hand .stat-label { font-size: 15px; }
+
+.stat-num {
+  font-family: var(--font-head);
+  font-size: 22px;
+  font-weight: 700;
+  margin-top: 8px;
+}
+body.theme-hand .stat-num { font-size: 26px; margin-top: 2px; }
+
+/* Layout & Panels */
+.layout {
+  display: grid;
+  grid-template-columns: 335px 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+.panel {
+  background: var(--paper);
+  border: var(--border-w) solid var(--line);
+  border-radius: var(--radius-alt);
+  box-shadow: var(--shadow);
+}
+
+.panel-head {
+  padding: 16px 19px;
+  border-bottom: var(--border-w) dashed #cbc3dc;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+body.theme-hand .panel-head { border-bottom-color: var(--line); }
+
+.panel-head h3 {
+  font-size: 12px;
+  margin: 0;
+}
+body.theme-hand .panel-head h3 { font-size: 16px; }
+
+.form-body { padding: 18px 20px; }
+.field { margin-bottom: 14px; }
+
+.field label {
+  display: block;
+  font-size: 12px;
+  font-weight: 900;
+  margin-bottom: 6px;
+}
+body.theme-hand .field label { font-size: 17px; }
+
+.field input, .field textarea, .field select {
+  width: 100%;
+  border: 2px solid var(--line);
+  border-radius: var(--radius-box);
+  background: #fff;
+  padding: 10px 12px;
+  outline: none;
+  font-weight: 700;
+}
+
+.field textarea {
+  resize: vertical;
+  min-height: 74px;
+}
+
+.field input:focus, .field textarea:focus, .field select:focus {
+  box-shadow: 3px 3px 0 var(--lav);
+}
+
+.two {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+/* Buttons */
+.btn {
+  border: var(--border-w) solid var(--line);
+  border-radius: var(--radius-box);
+  box-shadow: var(--shadow-sm);
+  padding: 11px 14px;
+  font-weight: 900;
+  cursor: pointer;
+  transition: transform .1s, box-shadow .1s, background .15s;
+}
+
+.btn:active {
+  transform: translate(3px, 3px);
+  box-shadow: none;
+}
+
+.btn-primary {
+  background: var(--mint);
+  width: 100%;
+}
+
+.btn-small {
+  padding: 7px 11px;
+  font-size: 11px;
+  background: var(--yellow);
+}
+body.theme-hand .btn-small { font-size: 15px; }
+
+.btn-expand {
+  background: #fff;
+  padding: 6px 10px;
+  font-size: 11px;
+  border: 2px solid var(--line);
+  border-radius: var(--radius-alt);
+  box-shadow: 2px 2px 0 var(--line);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+body.theme-hand .btn-expand { font-size: 15px; padding: 4px 11px; }
+
+.btn-expand:hover { background: var(--yellow); }
+.btn-expand.active { background: var(--pink); }
+
+/* Toolbar & Filters */
+.task-area { min-width: 0; }
+
+.toolbar {
+  padding: 14px 17px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+  border-bottom: var(--border-w) dashed #cbc3dc;
+}
+body.theme-hand .toolbar { border-bottom-color: var(--line); }
+
+.search {
+  flex: 1;
+  min-width: 140px;
+  border: 2px solid var(--line);
+  border-radius: var(--radius-box);
+  padding: 9px 12px;
+  background: #fff;
+  font-weight: 700;
+  outline: none;
+}
+
+.filters {
+  display: flex;
+  gap: 6px;
+}
+
+.filter {
+  border: 2px solid var(--line);
+  border-radius: var(--radius-alt);
+  background: #fff;
+  padding: 7px 11px;
+  font-size: 11px;
+  font-weight: 900;
+  cursor: pointer;
+}
+body.theme-hand .filter { font-size: 15px; padding: 5px 11px; box-shadow: 2px 2px 0 var(--line); }
+
+.filter.active {
+  background: var(--lav);
+}
+body.theme-hand .filter.active { background: var(--yellow); transform: rotate(-1.5deg); }
+
+/* Focus Mode (Lebar Selayar) */
+.app.board-expanded {
+  width: min(1400px, calc(100% - 28px));
+  margin-top: 20px;
+}
 .app.board-expanded .hero,
 .app.board-expanded .stats,
-.app.board-expanded .form-panel{display:none}
-.app.board-expanded .layout{grid-template-columns:1fr}
-.app.board-expanded .task-list{padding:18px;gap:12px}
-.app.board-expanded .task{padding:15px 18px}
-.app.board-expanded .task-title{font-size:15px}
-.app.board-expanded .task-desc{font-size:12px}
+.app.board-expanded .form-panel {
+  display: none;
+}
+.app.board-expanded .layout { grid-template-columns: 1fr; }
+.app.board-expanded .task-list { padding: 18px; gap: 13px; }
+.app.board-expanded .task { padding: 15px 19px; }
 
-/* Styling Drag & Drop & Reorder */
-.task{display:grid;grid-template-columns:18px 26px 1fr auto;gap:10px;align-items:center;border:2px solid var(--line);padding:12px;background:#fff;box-shadow:2px 2px 0 #d8d1e7;transition:transform .12s, background .15s, border-color .15s}
-.task.draggable{cursor:grab}
-.task.draggable:active{cursor:grabbing}
-.task.dragging{opacity:0.45;background:#f4f0ff;border-style:dashed}
-.task.drag-over-top{border-top:4px solid var(--lav);transform:translateY(2px)}
-.task.drag-over-bottom{border-bottom:4px solid var(--lav);transform:translateY(-2px)}
-.drag-handle{color:var(--muted);font-weight:900;font-size:14px;letter-spacing:-2px;user-select:none;text-align:center;cursor:grab}
-.task.done .drag-handle{opacity:0.3;cursor:default}
+/* Task List & Items */
+.task-list {
+  padding: 14px;
+  display: grid;
+  gap: 11px;
+}
 
-.task.done{opacity:.62;background:#f2f0f6}.check{width:23px;height:23px;border:2px solid var(--line);background:white;cursor:pointer;display:grid;place-items:center;font-weight:900;padding:0}.done .check{background:var(--mint)}.task-title{font-weight:900;font-size:14px;overflow-wrap:anywhere}.done .task-title{text-decoration:line-through}.task-desc{font-size:11px;color:var(--muted);margin-top:3px;overflow-wrap:anywhere}.task-meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:7px}.tag{font-size:9px;font-weight:900;padding:3px 6px;border:1px solid var(--line);background:#f1edff}.tag.high{background:#ffd5d5}.tag.medium{background:#fff0bd}.tag.low{background:#d9f7e9}.task-actions{display:flex;gap:4px;align-items:center}.icon-btn{border:2px solid var(--line);background:#fff;padding:5px 7px;cursor:pointer;font-size:11px;font-weight:900}.icon-btn:hover{background:var(--pink)}.icon-btn.move-btn{background:#f7f5ff;padding:5px 6px;font-size:10px}.icon-btn.move-btn:hover{background:var(--yellow)}.icon-btn:disabled{opacity:0.35;cursor:not-allowed;background:#eee}.empty{text-align:center;padding:42px 15px;color:var(--muted)}.empty .emoji{font-size:42px}.empty p{font-weight:900}.footer{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:13px 17px;border-top:3px dashed #d6cfe4;font-size:10px;color:var(--muted);font-weight:900}.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--ink);color:white;padding:12px 18px;border:2px solid white;box-shadow:4px 4px 0 #8c7dbd;font-weight:900;font-size:12px;transition:.25s;z-index:5}.toast.show{transform:translateX(-50%) translateY(0)}.tiny{font-size:9px;color:var(--muted);font-weight:800;margin-top:12px;line-height:1.7}
+.task {
+  display: grid;
+  grid-template-columns: 18px 26px 1fr auto;
+  gap: 10px;
+  align-items: center;
+  border: 2px solid var(--line);
+  border-radius: var(--radius-box);
+  padding: 12px 14px;
+  background: #fff;
+  box-shadow: 2.5px 2.5px 0 rgba(41, 36, 61, 0.25);
+  transition: transform .12s, background .15s, border-color .15s;
+}
+body.theme-hand .task { box-shadow: 3px 3px 0 var(--line); }
+body.theme-hand .task:nth-child(even) { border-radius: var(--radius-alt); }
 
-@media(max-width:760px){.layout{grid-template-columns:1fr}.hero{padding:21px}.hero-art{font-size:48px}.stats{gap:8px}.stat{padding:12px}.stat-num{font-size:17px}.topbar{align-items:flex-start}.date-chip{font-size:10px}.filters{width:100%}.filter{flex:1}}
-@media(max-width:460px){.brand h1{font-size:11px}.date-chip{padding:8px}.stats{grid-template-columns:repeat(3,1fr)}.stat-label{font-size:8px}.stat-num{font-size:14px}.task{grid-template-columns:16px 24px 1fr}.task-actions{grid-column:2 / 4;justify-content:flex-end;margin-top:4px}.two{grid-template-columns:1fr}.head-hint{display:none}}
+.task.draggable { cursor: grab; }
+.task.draggable:active { cursor: grabbing; }
+.task.dragging { opacity: 0.45; background: #f4f0ff; border-style: dashed; }
+.task.drag-over-top { border-top: 4px solid var(--lav); transform: translateY(2px); }
+.task.drag-over-bottom { border-bottom: 4px solid var(--lav); transform: translateY(-2px); }
+
+.drag-handle {
+  color: var(--muted);
+  font-weight: 900;
+  font-size: 15px;
+  letter-spacing: -2px;
+  user-select: none;
+  text-align: center;
+  cursor: grab;
+}
+.task.done .drag-handle { opacity: 0.3; cursor: default; }
+
+.task.done {
+  opacity: .64;
+  background: #f2f0f6;
+}
+
+.check {
+  width: 24px;
+  height: 24px;
+  border: 2px solid var(--line);
+  border-radius: var(--radius-pill);
+  background: #fff;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  font-weight: 900;
+  padding: 0;
+}
+.done .check { background: var(--mint); }
+
+.task-title {
+  font-weight: 900;
+  font-size: 15px;
+  overflow-wrap: anywhere;
+}
+body.theme-hand .task-title { font-size: 19px; font-weight: 700; }
+.done .task-title { text-decoration: line-through; }
+
+.task-desc {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 3px;
+  overflow-wrap: anywhere;
+}
+body.theme-hand .task-desc { font-size: 16px; }
+
+.task-meta {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 7px;
+}
+
+.tag {
+  font-size: 10px;
+  font-weight: 900;
+  padding: 3px 8px;
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius-box);
+  background: #f1edff;
+}
+body.theme-hand .tag { font-size: 14px; padding: 1px 9px; font-weight: 700; }
+
+.tag.high { background: #ffd5d5; }
+.tag.medium { background: #fff0bd; }
+.tag.low { background: #d9f7e9; }
+
+.task-actions {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.icon-btn {
+  border: 2px solid var(--line);
+  border-radius: var(--radius-pill);
+  background: #fff;
+  padding: 5px 7px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 900;
+}
+body.theme-hand .icon-btn { box-shadow: 1.5px 2px 0 var(--line); font-size: 14px; }
+
+.icon-btn:hover { background: var(--pink); }
+.icon-btn.move-btn { background: #f7f5ff; padding: 5px 6px; font-size: 10px; }
+.icon-btn.move-btn:hover { background: var(--yellow); }
+.icon-btn:disabled { opacity: 0.35; cursor: not-allowed; background: #eee; box-shadow: none; }
+
+.empty {
+  text-align: center;
+  padding: 42px 15px;
+  color: var(--muted);
+}
+.empty .emoji { font-size: 44px; }
+.empty p { font-weight: 900; color: var(--ink); margin: 8px 0 4px; }
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 17px;
+  border-top: var(--border-w) dashed #cbc3dc;
+  font-size: 11px;
+  color: var(--muted);
+  font-weight: 900;
+}
+body.theme-hand .footer { border-top-color: var(--line); font-size: 16px; }
+
+.toast {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: var(--ink);
+  color: #fff;
+  padding: 11px 19px;
+  border: 2px solid #fff;
+  border-radius: var(--radius-box);
+  box-shadow: 4px 4px 0 #8c7dbd;
+  font-weight: 900;
+  font-size: 13px;
+  transition: .25s;
+  z-index: 10;
+}
+body.theme-hand .toast { font-size: 17px; }
+.toast.show { transform: translateX(-50%) translateY(0); }
+
+.tiny {
+  font-size: 10px;
+  color: var(--muted);
+  font-weight: 800;
+  margin-top: 12px;
+  line-height: 1.6;
+}
+body.theme-hand .tiny { font-size: 14px; line-height: 1.4; }
+
+@media(max-width:760px) {
+  .layout { grid-template-columns: 1fr; }
+  .hero { padding: 20px; }
+  .hero-art { font-size: 46px; }
+  .stats { gap: 9px; }
+  .stat { padding: 12px; }
+  .stat-num { font-size: 18px; }
+  .filters { width: 100%; }
+  .filter { flex: 1; }
+}
+
+@media(max-width:480px) {
+  .brand h1 { font-size: 13px; }
+  .date-chip { padding: 7px 9px; font-size: 11px; }
+  .stats { grid-template-columns: repeat(3, 1fr); }
+  .stat-label { font-size: 9px; }
+  .stat-num { font-size: 15px; }
+  .task { grid-template-columns: 16px 24px 1fr; }
+  .task-actions { grid-column: 2 / 4; justify-content: flex-end; margin-top: 4px; }
+  .two { grid-template-columns: 1fr; }
+  .head-hint { display: none; }
+}
 </style>
 </head>
-<body>
+<body class="theme-pixel">
 <main class="app" id="appRoot">
   <header class="topbar">
-    <div class="brand"><div class="brand-icon">🎮</div><h1 class="pixel">PIXEL QUEST</h1></div>
-    <div class="date-chip" id="today">LOADING...</div>
+    <div class="brand">
+      <div class="brand-icon" id="brandIcon">🎮</div>
+      <h1 class="display-font" id="brandTitle">PIXEL QUEST</h1>
+    </div>
+    <div class="top-controls">
+      <div class="theme-switcher" role="group" aria-label="Pilih Tema Tampilan">
+        <button class="theme-btn active" data-theme="pixel" type="button">🎮 1. Pixel</button>
+        <button class="theme-btn" data-theme="hand" type="button">✏️ 2. Hand-Drawn</button>
+      </div>
+      <div class="date-chip" id="today">LOADING...</div>
+    </div>
   </header>
+
   <section class="hero">
-    <div><h2 class="pixel">YOUR DAILY QUEST</h2><p>Satu tugas selesai, satu langkah naik level! 🚀</p></div>
-    <div class="hero-art">🧙‍♂️</div>
+    <div>
+      <h2 class="display-font" id="heroTitle">YOUR DAILY QUEST</h2>
+      <p id="heroSubtitle">Satu tugas selesai, satu langkah naik level! 🚀</p>
+    </div>
+    <div class="hero-art" id="heroArt">🧙‍♂️</div>
   </section>
+
   <section class="stats">
-    <div class="stat"><div class="stat-label">Total Quest</div><div class="stat-num" id="totalCount">00</div></div>
-    <div class="stat"><div class="stat-label">Completed</div><div class="stat-num" id="doneCount">00</div></div>
-    <div class="stat"><div class="stat-label">Progress</div><div class="stat-num" id="progressCount">0%</div></div>
+    <div class="stat">
+      <div class="stat-label">Total Quest</div>
+      <div class="stat-num" id="totalCount">00</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Completed</div>
+      <div class="stat-num" id="doneCount">00</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Progress</div>
+      <div class="stat-num" id="progressCount">0%</div>
+    </div>
   </section>
+
   <div class="layout">
     <section class="panel form-panel">
-      <div class="panel-head"><h3 class="pixel" id="formHeading">+ NEW QUEST</h3><span>📝</span></div>
+      <div class="panel-head">
+        <h3 class="display-font" id="formHeading">+ NEW QUEST</h3>
+        <span id="formIcon">📝</span>
+      </div>
       <form class="form-body" id="taskForm">
-        <div class="field"><label for="taskTitle">Nama tugas *</label><input id="taskTitle" maxlength="90" placeholder="Contoh: Belajar JavaScript..." required></div>
-        <div class="field"><label for="taskDesc">Catatan (opsional)</label><textarea id="taskDesc" maxlength="220" placeholder="Tulis detail kecil di sini..."></textarea></div>
+        <div class="field">
+          <label for="taskTitle">Nama tugas *</label>
+          <input id="taskTitle" maxlength="90" placeholder="Contoh: Belajar JavaScript..." required>
+        </div>
+        <div class="field">
+          <label for="taskDesc">Catatan (opsional)</label>
+          <textarea id="taskDesc" maxlength="220" placeholder="Tulis detail kecil di sini..."></textarea>
+        </div>
         <div class="two">
-          <div class="field"><label for="taskDate">Deadline</label><input id="taskDate" type="date"></div>
-          <div class="field"><label for="taskPriority">Prioritas</label><select id="taskPriority"><option value="low">Santai</option><option value="medium" selected>Normal</option><option value="high">Penting!</option></select></div>
+          <div class="field">
+            <label for="taskDate">Deadline</label>
+            <input id="taskDate" type="date">
+          </div>
+          <div class="field">
+            <label for="taskPriority">Prioritas</label>
+            <select id="taskPriority">
+              <option value="low">Santai</option>
+              <option value="medium" selected>Normal</option>
+              <option value="high">Penting!</option>
+            </select>
+          </div>
         </div>
         <button class="btn btn-primary" id="submitBtn" type="submit">⚔ TAMBAH QUEST</button>
         <button class="btn" id="cancelEdit" type="button" style="display:none;width:100%;margin-top:10px;background:#ffe2ee">BATAL EDIT</button>
-        <div class="tiny">💾 Data tersimpan otomatis di browser ini menggunakan JSON (localStorage). Tidak perlu database/server.</div>
+        <div class="tiny">💾 Data & pilihan tema tersimpan otomatis di browser ini (localStorage).</div>
       </form>
     </section>
+
     <section class="panel task-area">
       <div class="panel-head">
-        <h3 class="pixel">QUEST BOARD</h3>
+        <h3 class="display-font">QUEST BOARD</h3>
         <div style="display:flex;align-items:center;gap:10px">
-          <span class="head-hint" style="font-size:11px;font-weight:800;color:var(--muted)">⇅ Geser urutan</span>
+          <span class="head-hint" style="font-size:12px;font-weight:800;color:var(--muted)">⇅ Geser urutan</span>
           <button class="btn btn-expand" id="toggleExpand" type="button" title="Lebarkan papan quest selayar (Esc untuk kembali)">⛶ LEBARKAN</button>
         </div>
       </div>
@@ -87,15 +750,22 @@ button,input,textarea,select{font:inherit}.pixel{font-family:'Press Start 2P',mo
         </div>
       </div>
       <div class="task-list" id="taskList"></div>
-      <div class="footer"><span id="remainingText">0 quest tersisa</span><button class="btn btn-small" id="clearDone">BERSIHKAN SELESAI</button></div>
+      <div class="footer">
+        <span id="remainingText">0 quest tersisa</span>
+        <button class="btn btn-small" id="clearDone">BERSIHKAN SELESAI</button>
+      </div>
     </section>
   </div>
 </main>
 <div class="toast" id="toast"></div>
+
 <script>
 (() => {
   const STORAGE_KEY = 'pixelQuest.tasks.v1';
+  const THEME_KEY = 'pixelQuest.theme.v1';
+
   let tasks = loadTasks();
+  let currentTheme = localStorage.getItem(THEME_KEY) || 'pixel';
   let filter = 'all';
   let editingId = null;
   let draggedId = null;
@@ -104,6 +774,57 @@ button,input,textarea,select{font:inherit}.pixel{font-family:'Press Start 2P',mo
   const $ = id => document.getElementById(id);
   const titleInput = $('taskTitle'), descInput = $('taskDesc'), dateInput = $('taskDate'), priorityInput = $('taskPriority');
 
+  // Pengaturan Tema (1: Pixel Art, 2: Hand-Drawn)
+  const THEME_META = {
+    pixel: {
+      brandIcon: '🎮',
+      brandTitle: 'PIXEL QUEST',
+      heroTitle: 'YOUR DAILY QUEST',
+      heroSubtitle: 'Satu tugas selesai, satu langkah naik level! 🚀',
+      heroArt: '🧙‍♂️',
+      formIcon: '📝',
+      toastMsg: '🎮 Tema Pixel Art aktif!'
+    },
+    hand: {
+      brandIcon: '✏️',
+      brandTitle: 'SKETCH QUEST',
+      heroTitle: 'YOUR DAILY DOODLE QUEST',
+      heroSubtitle: 'Coret satu tugas selesai, makin dekat ke tujuanmu! ✨',
+      heroArt: '📓',
+      formIcon: '🖍️',
+      toastMsg: '✏️ Tema Hand-Drawn aktif!'
+    }
+  };
+
+  function applyTheme(theme, showToast = false) {
+    currentTheme = THEME_META[theme] ? theme : 'pixel';
+    document.body.className = `theme-${currentTheme}`;
+    localStorage.setItem(THEME_KEY, currentTheme);
+
+    document.querySelectorAll('.theme-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.theme === currentTheme);
+    });
+
+    const meta = THEME_META[currentTheme];
+    $('brandIcon').textContent = meta.brandIcon;
+    $('brandTitle').textContent = meta.brandTitle;
+    $('heroTitle').textContent = meta.heroTitle;
+    $('heroSubtitle').textContent = meta.heroSubtitle;
+    $('heroArt').textContent = meta.heroArt;
+    $('formIcon').textContent = meta.formIcon;
+
+    if (showToast) notify(meta.toastMsg);
+  }
+
+  document.querySelectorAll('.theme-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (btn.dataset.theme !== currentTheme) {
+        applyTheme(btn.dataset.theme, true);
+      }
+    });
+  });
+
+  // Mode Layar Penuh (Focus View)
   function setExpanded(state) {
     isExpanded = state;
     $('appRoot').classList.toggle('board-expanded', isExpanded);
@@ -203,7 +924,7 @@ button,input,textarea,select{font:inherit}.pixel{font-family:'Press Start 2P',mo
             ${t.desc ? `<div class="task-desc">${escapeHTML(t.desc)}</div>` : ''}
             <div class="task-meta">
               <span class="tag ${t.priority}">${t.priority==='high'?'🔥 PENTING':t.priority==='medium'?'⚡ NORMAL':'🌱 SANTAI'}</span>
-              ${t.date ? `<span class="tag">📅 ${escapeHTML(formatDate(t.date))}</span>` : ''}
+              ${t.date ? `<span class="tag" style="background:var(--blue)">📅 ${escapeHTML(formatDate(t.date))}</span>` : ''}
             </div>
           </div>
           <div class="task-actions">
@@ -219,6 +940,7 @@ button,input,textarea,select{font:inherit}.pixel{font-family:'Press Start 2P',mo
     }
   }
 
+  // Drag & Drop Listeners
   const taskListEl = $('taskList');
 
   taskListEl.addEventListener('dragstart', e => {
@@ -323,6 +1045,8 @@ button,input,textarea,select{font:inherit}.pixel{font-family:'Press Start 2P',mo
     if(confirm(`Hapus ${count} quest yang sudah selesai?`)){tasks=tasks.filter(t=>!t.done);saveTasks();notify('Quest selesai dibersihkan!');}
   });
   $('today').textContent=new Date().toLocaleDateString('id-ID',{weekday:'short',day:'2-digit',month:'short',year:'numeric'}).toUpperCase();
+  
+  applyTheme(currentTheme, false);
   render();
 })();
 </script>
